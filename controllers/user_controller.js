@@ -8,6 +8,11 @@ module.exports.profile = function(req,res) {
 }
 
 module.exports.signUp = function(req,res){
+//    if user is authenticated go to the profile
+    if(req.isAuthenticated()){
+
+        return res.redirect('/users/profile');
+     }
 
    return res.render('user_sign_up',{
            title:"Sign UP"
@@ -17,6 +22,14 @@ module.exports.signUp = function(req,res){
 
 
 module.exports.signIn = function(req,res){
+
+    //if user is already authenticated to go to the profile page
+    if(req.isAuthenticated()){
+
+        return res.redirect('/users/profile');
+     }
+
+     //else go to the sign in page
 
      return res.render('user_sign_in',{
            title:"Sign In"
