@@ -1,4 +1,5 @@
 const passport = require('passport');
+const bcrypt = require('bcrypt');
 
 const LocalStrategy = require('passport-local').Strategy;
 
@@ -20,14 +21,25 @@ passport.use(new LocalStrategy({
                 return done(err);
             }
 
-            if (!user || user.password != password){
-                // console.log('Invalid Username/Password');
-                req.flash('error','Invalid User/Password');
-                return done(null, false);
-            }
+              // find the hash password from the db and check with current password
+            bcrypt.compare(password, user.password).then(function(result) {
+                // result == true
+
+                if (!user || result==false){
+                    // console.log('Invalid Username/Password');
+                    req.flash('error','Invalid User/Password');
+                    return done(null, false);
+                }
+                  
             console.log("found user")
 
             return done(null, user);
+            }).catch((err) =>{
+                  
+                return done(null,false);
+            });
+
+          
         });
     }
 

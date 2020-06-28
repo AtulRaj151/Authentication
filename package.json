@@ -18,7 +18,10 @@
   },
   "homepage": "https://github.com/AtulRaj151/Authentication#readme",
   "dependencies": {
+    "bcrypt": "^5.0.0",
+    "connect-mongo": "^3.2.0",
     "cookie-parser": "^1.4.5",
+    "crypto": "^1.0.1",
     "ejs": "^3.1.3",
     "express": "^4.17.1",
     "express-ejs-layouts": "^2.5.0",
@@ -26,6 +29,8 @@
     "expresss": "0.0.0",
     "mongoose": "^5.9.20",
     "passport": "^0.4.1",
-    "passport-local": "^1.0.0"
+    "passport-google-oauth": "^2.0.0",
+    "passport-local": "^1.0.0",
+    "passport-local-authenticate": "^1.2.0"
   }
 }

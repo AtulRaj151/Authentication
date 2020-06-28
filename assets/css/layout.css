@@ -3,4 +3,7 @@ body {
     /* text-align:  center; */ }
     body #layout-main {
       height: 100%; }
-  
+.google{
+  height: 39px;
+  width: 40px;
+}

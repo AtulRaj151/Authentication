@@ -1,6 +1,15 @@
 <footer class="footer">
     <span class="company"> Atul Raj</span>
- 
+    <ul class="footer-site-nav">  
+       <% if(locals.user) { %>
+        <li class="reset-password">
+            <a href="/users/reset-password">
+                 Reset Password
+            </a>
+        </li>
+        <% } %>
+
+    </ul>
       <nav class="footer-nav">
             
       </nav>

@@ -21,4 +21,17 @@
         color: yellowgreen; }
       .footer-nav li a:active {
         background-color: gold; }
-  
+.reset-password {
+   list-style: none;
+}
+.reset-password a {
+     text-align: center;
+     text-decoration: none;
+     color:crimson;
+     
+     font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif ;
+     text-transform: uppercase;
+}
+.footer-site-nav {
+    margin-left: 80%;
+}

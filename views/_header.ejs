@@ -2,8 +2,30 @@
 <header class="header">
 
     
-    <span class="logo">CodingNinja Test</span>
+    <span class="logo">MOCK Interview 3</span>
  <ul class="site-nav">
- 
+ <% if(locals.user){ %>
+
+     <li class="user"><%= user.name %> </li>
+     <li class="sign-out">
+         <a href="/users/sign-out">
+              SignOut
+         </a>
+     </li>
+    
+  <% }else{ %>
+
+       <li class="sign-in">
+            <a href="/users/sign-in">
+                    SignIn
+            </a>
+       </li>
+       <li class="sign-up">
+          <a href="/users/sign-up">
+              SignUp
+          </a>    
+       </li>
+  <% } %>
+
  </ul>
 </header>
