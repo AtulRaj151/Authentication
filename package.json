@@ -1,0 +1,31 @@
+{
+  "name": "authentication",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AtulRaj151/Authentication.git"
+  },
+  "author": "Atul Raj",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AtulRaj151/Authentication/issues"
+  },
+  "homepage": "https://github.com/AtulRaj151/Authentication#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.5",
+    "ejs": "^3.1.3",
+    "express": "^4.17.1",
+    "express-ejs-layouts": "^2.5.0",
+    "express-session": "^1.17.1",
+    "expresss": "0.0.0",
+    "mongoose": "^5.9.20",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0"
+  }
+}
