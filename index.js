@@ -27,8 +27,6 @@ app.set('layout extractStyles',true);//setting local css
 app.set('layout extractScripts',true);//setting local js
 
 
-///setting the routes 
-app.use('/',require('./routes'));
 
 
 //setting up view engine
@@ -38,33 +36,36 @@ app.set('views','views');
 
 
 
-// //creating session
-// app.use(session({
-//        name: 'authentication',
-//        //TODO change the secret before deployment
-//        secret: 'codingNinjaTest3',
-//        saveUninitialized: false,
-//        resave:false,
-//        cookie:{
-//               maxAge: (1000*60*100)
-//        },
-//        store: new MongoStore(
+//creating session
+app.use(session({
+       name: 'atul', // name of the cookie
+       //TODO change the secret before deployment
+       secret: 'codingNinjaTest3',
+       saveUninitialized: false,
+       resave:false,
+       cookie:{
+              maxAge: (1000*60*100)
+       },
+       // store: new MongoStore(
   
-//               {
-//                    mongooseConnection:db,
-//                    autoRemove: 'disabled'
-//               },
-//               function(err){
-//                    console.log(err || 'connect to db');
-//               }
-//        )
+       //        {
+       //             mongooseConnection:db,
+       //             autoRemove: 'disabled'
+       //        },
+       //        function(err){
+       //             console.log(err || 'connect to db');
+       //        }
+       // )
   
-//   }));
+  }));
   
-//   app.use(passport.initialize());
-//   app.use(passport.session());
+  app.use(passport.initialize());
+  app.use(passport.session());
 
+  app.use(passport.setAuthenticatedUser); //passing user to views
 
+///setting the routes 
+app.use('/',require('./routes'));
 
 //listen to the required port
 app.listen(port,function(err){

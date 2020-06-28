@@ -1,0 +1,33 @@
+.header {
+    display: flex;
+    background-color:goldenrod;
+    color: white;
+    align-items: center; }
+  
+  .logo {
+    color: white;
+    font-size: 0.9rem;
+    font-weight: bold;
+    letter-spacing: 3px;
+    padding: 10px; }
+  
+  .site-nav {
+    list-style: none;
+    display: flex;
+    margin-left: auto;
+    align-items: center;
+    margin-right: 10px; }
+    .site-nav a {
+      text-transform: uppercase;
+      text-decoration: none;
+      display: inline-block;
+      color: white;
+      padding: 5px; }
+    .site-nav .user {
+      text-transform: uppercase;
+      font-size: 1rem;
+      padding: 5px; }
+  
+  .sign-out a {
+    color: lightgreen; }
+  
