@@ -9,6 +9,8 @@ const session = require('express-session')  // require express session for creat
 const passport = require('passport')
 const passportGoogle = require('./config/passport-google-oauth2-strategy');
 const passportLocal = require('./config/passport-local-strategy');
+const flash = require('connect-flash'); // connect flash for notification
+const customMiddleware = require('./config/middleware');
 //setting up session in mongodb
 const MongoStore = require('connect-mongo')(session);
 
@@ -66,6 +68,9 @@ app.use(session({
   app.use(passport.session());
 
   app.use(passport.setAuthenticatedUser); //passing user to views
+
+  app.use(flash()); ///it uses ssession cookie hence it is placed here
+  app.use(customMiddleware.setFlash);
 
 ///setting the routes 
 app.use('/',require('./routes'));
