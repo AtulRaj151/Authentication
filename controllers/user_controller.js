@@ -1,5 +1,9 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
+const resetP = require('../mailers/reset_password');
+//for json web tokens
+const jwt = require('jsonwebtoken');
+const jwtSimple = require('jwt-simple');
 
 
 module.exports.profile = function(req,res) {
@@ -141,5 +145,92 @@ module.exports.update = async function(req,res) {
    }else{
        return res.redirect('back');
    }
+
+}
+
+//forgot password
+
+module.exports.forgotPassword = function(req,res){
+     
+      return res.render('forgot');
+}
+//generating reset link
+module.exports.resetLink = function(req,res){
+
+       const email = req.body.email;
+       User
+       .findOne({email:email})
+       .then((user) =>{
+            if(!user){
+                  console.log("no user present");
+                  return;
+            }
+            let token = jwt.sign(user.toJSON(),'codingninja',{expiresIn:'20000'});
+
+          resetP.resetPassword(user,token);
+
+          return res.redirect('back');
+          
+       })
+   
+       .catch((err) =>{
+            console.log("Error in sending mails1")
+       })
+
+}
+//reciveing reset link  from user
+
+module.exports.setPassword = function(req,res) {
+
+    const {user_id,token} = req.params;
+
+    User.findOne({user_id})
+    .then((user) => {
+         
+        const secret = 'codingninja';
+       
+         try{
+
+              let decode = jwtSimple.decode(token,secret); //decoding the user using jwt simple
+              return res.render('user_forgot_password',{
+                  decode:decode
+              });
+
+         }catch(err){
+                 console.log("error expired");
+                 return res.redirect('/users/forgot-password');
+         }
+       
+        // console.log(x.iat - x.exp);
+        // console.log("payload is",payload);
+        return res.redirect('back');
+    })
+
+
+}
+
+module.exports.setForgottonNewPassword = function(req,res){
+
+       
+      
+    if(req.body.password != req.body.confirm_password){
+
+        return res.redirect('back');
+     }
+
+              bcrypt.hash(req.body.password, 10).then(function(hash) {
+                        console.log(req.body.password);
+                User.findByIdAndUpdate(req.params.id,{password:hash},function(err,user){
+
+                });
+                    console.log("password updateed");
+                    return res.redirect('/users/profile');
+
+                }).catch((err)=>{
+                    console.log(err);
+                })
+                
+
+
 
 }
