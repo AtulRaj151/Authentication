@@ -9,8 +9,8 @@ let transporter = nodemailer.createTransport({
     port: 465,
     secure: true,
     auth: {
-        user: 'atulsid156@gmail.com',
-        pass: '********'
+        user: 'Your UserName',//Enter your username of Gmail
+        pass: 'Password' //Password of your Gmail
     }
 });
 
