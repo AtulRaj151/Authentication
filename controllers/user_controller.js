@@ -132,6 +132,12 @@ module.exports.createSession = function(req,res){
     // console.log('In createSession'   
 
     //creating verification for recaptcha
+  // if for google authentication  we are not going to verfiy captcha hence req.body is empty object
+     if(Object.keys(req.body).length == 0){
+
+        req.flash('success',"Logged In Successfully");
+         return res.redirect('/');
+     }
      const captcha  = req.body['g-recaptcha-response']  // fetching the recaptcha response
 
      //if captcha not  ticked then error
