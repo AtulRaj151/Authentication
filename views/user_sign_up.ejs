@@ -3,12 +3,16 @@
     <h1>Sign Up</h1>
     <p>Coding Ninja Test3</p>
 
-<form action="/users/create" method="post" class="form-design">
+<form action="/users/create" method="post" class="form-design" id="verifyform">
 
     <input type="text" name="name" placeholder="Your Name" required>
      <input type="email" name="email" placeholder="Your Email" required>
      <input type="password" name="password" placeholder="Your Password" required>
      <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+     <div
+     class="g-recaptcha"
+     data-sitekey="6Le5D6sZAAAAAKKmF8ZniHsIk8Opx3Ji8dJXhAiy"
+   ></div>
       <button type="submit" value="SignUp">SignUp</button>
 </form>
 <p>OR</p>

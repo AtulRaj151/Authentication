@@ -1,11 +1,17 @@
 <section class="auth-box"> 
     <h1>Sign In</h1>
     <p>Coding Ninja Test3</p>
-    <form action="/users/create-session" method="POST" class="form-design">
+    <form action="/users/create-session" method="POST" class="form-design" id="subscribeForm">
      
-          <input type="email" placeholder="Email" name="email" required>
-          <input type="password" placeholder="Password" name="password" required>
+          <input type="email" placeholder="Email" name="email"  id="email" required>
+          <input type="password" placeholder="Password" name="password" id="password"  required>
+          <div
+            class="g-recaptcha"
+            data-sitekey="6Le5D6sZAAAAAKKmF8ZniHsIk8Opx3Ji8dJXhAiy"
+          ></div>
            <button type="submit">SignIn</button>
+
+
     
     </form>
     <p>OR</p>
@@ -20,4 +26,5 @@
     </p>
     
     </section>
-    
+
+   

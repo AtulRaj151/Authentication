@@ -4,6 +4,9 @@ const resetP = require('../mailers/reset_password');
 //for json web tokens
 const jwt = require('jsonwebtoken');
 const jwtSimple = require('jwt-simple');
+//for sending request for captcha
+const request = require('request');
+
 
 
 module.exports.profile = function(req,res) {
@@ -45,7 +48,7 @@ module.exports.signIn = function(req,res){
 module.exports.create = async function(req,res){
   
     if(req.body.password != req.body.confirm_password){
-
+        req.flash('error',"Password Not Matched");
        return res.redirect('back');
     }
 
@@ -65,14 +68,51 @@ module.exports.create = async function(req,res){
                 // });
                   //convert the plain text password to the hash password
                 bcrypt.hash(req.body.password, 10).then(function(hash) {
+
+                    const captcha  = req.body['g-recaptcha-response']  // fetching the recaptcha response
+
+                    //if captcha not  ticked then error
+                    if(captcha === undefined ||
+                       captcha == ''
+                       || captcha == null){
+                           req.logout();
+                            console.log(captcha)
+                                
+                           req.flash('error',"Verify Captcha!!!!");
+                          
+               
+                            return res.redirect('back')
+                       }
+                            //secret Key
+                            const secretKey = '6Le5D6sZAAAAAHcMYrcdLLcZs7bHU8pY1MKKNp42';
+               
+                            //verifyKey 
+                             const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}
+                             &response=${captcha}&remoteip${req.connection.remoteAddress}`;
+                         //make request to verify url
+               
+                         request(verifyUrl,(err,response,body)=>{
+               
+                             body = JSON.parse(body);
+               
+                             if(body.success!=undefined && !body.success){
+                                  req.logout();
+                                  req.flash('error',"Incorrect");
+                               return res.redirect('back');
+                             }
+               
+                             //if Successfull
+                             User.create({
+                                email:req.body.email,
+                                password:hash,
+                                name:req.body.name
+                                 
+                           });
+                           req.flash('success',"Now Login");
+                           return res.redirect('/users/sign-in');
+                         })
                  
-                    User.create({
-                        email:req.body.email,
-                        password:hash,
-                        name:req.body.name
-                         
-                   });
-                   return res.redirect('/users/sign-in');
+                 
                 }).catch((err)=>{
                      console.log(err);
                 })
@@ -82,15 +122,55 @@ module.exports.create = async function(req,res){
                
 
             }else{
+                req.flash('error',"User Already Exists");
                 return res.redirect('back');
             }
 
 }
 
 module.exports.createSession = function(req,res){
-    // console.log('In createSession')
-    req.flash('success',"logged in Successfully");
-   return res.redirect('/');
+    // console.log('In createSession'   
+
+    //creating verification for recaptcha
+     const captcha  = req.body['g-recaptcha-response']  // fetching the recaptcha response
+
+     //if captcha not  ticked then error
+     if(captcha === undefined ||
+        captcha == ''
+        || captcha == null){
+            req.logout();
+             console.log(captcha)
+                 
+            req.flash('error',"Verify Captcha!!!!");
+           
+
+             return res.redirect('back')
+        }
+             //secret Key
+             const secretKey = '6Le5D6sZAAAAAHcMYrcdLLcZs7bHU8pY1MKKNp42';
+
+             //verifyKey 
+              const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}
+              &response=${captcha}&remoteip${req.connection.remoteAddress}`;
+          //make request to verify url
+
+          request(verifyUrl,(err,response,body)=>{
+
+              body = JSON.parse(body);
+
+              if(body.success!=undefined && !body.success){
+                   req.logout();
+                   req.flash('error',"Incorrect");
+                return res.redirect('back');
+              }
+
+              //if Successfull
+
+              req.flash('success',"logged in Successfully");
+              return res.redirect('/');
+          })
+
+ 
 }
 
 module.exports.destroySession = function(req,res){
@@ -110,6 +190,7 @@ module.exports.update = async function(req,res) {
 
         if(req.user.id == req.params.id) {
             if(req.body.password != req.body.confirm_password){
+                req.flash('error',"Password not Matched");
                 return res.redirect('back');
             }
 
@@ -127,13 +208,14 @@ module.exports.update = async function(req,res) {
                            User.findByIdAndUpdate(req.params.id,{password:hash},function(err,user){
 
                            });
-                            console.log("password updateed");
+                           req.flash('success',"Password Updated");
                             return res.redirect('/users/profile');
                        
                         }).catch((err)=>{
                             console.log(err);
                         })
                     }else{
+                        req.flash('error',"Old Password not Matched");
                         return res.redirect('back');
                     }
    
@@ -168,8 +250,9 @@ module.exports.resetLink = function(req,res){
             let token = jwt.sign(user.toJSON(),'codingninja',{expiresIn:'20000'});
 
           resetP.resetPassword(user,token);
+          req.flash('success',"Reset Link has been sent to your Mail");
 
-          return res.redirect('back');
+          return res.redirect('/users/profile');
           
        })
    
@@ -198,6 +281,8 @@ module.exports.setPassword = function(req,res) {
 
          }catch(err){
                  console.log("error expired");
+                 req.flash('error',"Session Expired");
+                 req.flash('error'," Reset Again");
                  return res.redirect('/users/forgot-password');
          }
        
@@ -234,3 +319,5 @@ module.exports.setForgottonNewPassword = function(req,res){
 
 
 }
+
+
